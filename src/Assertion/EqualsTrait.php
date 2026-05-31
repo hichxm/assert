@@ -19,7 +19,7 @@ trait EqualsTrait
      */
     public static function equals($value1, $value2, $message = null, $strict = false)
     {
-        $areEqual = $strict ? ($value1 === $value2) : ($value1 == $value2);
+        $areEqual = static::areEquals($value1, $value2, $strict);
 
         if (!$areEqual) {
             $message = static::generateMessage(
@@ -39,5 +39,14 @@ trait EqualsTrait
     public static function strictEquals($value1, $value2, $message = null)
     {
         return self::equals($value1, $value2, $message, true);
+    }
+
+    private static function areEquals($value1, $value2, $strict = false)
+    {
+        // TODO : https://wiki.php.net/rfc/string_to_number_comparison
+
+        return $strict
+            ? $value1 === $value2
+            : $value1 == $value2;
     }
 }
