@@ -17,13 +17,13 @@ trait EqualsTrait
      *
      * @return bool Returns true if the values are equal.
      */
-    public static function equals($value1, $value2, $message = null, $strict = false)
+    public static function equals($value1, $value2, $message = null, $strict = false, $isEquals = true)
     {
         $areEqual = static::areEquals($value1, $value2, $strict);
 
-        if (!$areEqual) {
+        if ($isEquals ? !$areEqual : $areEqual) {
             $message = static::generateMessage(
-                $message ?: 'Expected "%s" to be ' . ($strict ? 'strictly ' : '') . 'equal to "%s"',
+                $message ?: 'Expected "%s" to ' . ($isEquals ? 'not  ' : '') . 'be ' . ($strict ? 'strictly ' : '') . 'equal to "%s"',
                 [
                     is_array($value1) ? json_encode($value1) : $value1,
                     is_array($value2) ? json_encode($value2) : $value2,
@@ -39,6 +39,16 @@ trait EqualsTrait
     public static function strictEquals($value1, $value2, $message = null)
     {
         return self::equals($value1, $value2, $message, true);
+    }
+
+    public static function notEquals($value1, $value2, $message = null)
+    {
+        return self::equals($value1, $value2, $message, false, false);
+    }
+
+    public static function strictNotEquals($value1, $value2, $message = null)
+    {
+        return self::equals($value1, $value2, $message, true, false);
     }
 
     private static function areEquals($value1, $value2, $strict = false)

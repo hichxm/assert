@@ -160,3 +160,125 @@ test('Fail on different negative numbers', function () {
         Assert::equals(-5, -10);
     });
 });
+
+test('Success with notEquals on different values', function () {
+    Assert::notEquals(1, 2);
+});
+
+test('Fail with notEquals on same values', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::notEquals(1, 1);
+    });
+});
+
+test('Success with notEquals on different types', function () {
+    Assert::notEquals(1, '2');
+});
+
+test('Fail with notEquals on same value different types in non-strict mode', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::notEquals(1, '1');
+    });
+});
+
+test('Success with strictNotEquals on same value different types', function () {
+    Assert::strictNotEquals(1, '1');
+});
+
+test('Fail with strictNotEquals on same type and same value', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::strictNotEquals(1, 1);
+    });
+});
+
+test('Success with strictNotEquals on different values', function () {
+    Assert::strictNotEquals(1, 2);
+});
+
+test('Success with strictNotEquals on different types and different values', function () {
+    Assert::strictNotEquals('1', 2);
+});
+
+test('Success with notEquals on array values', function () {
+    Assert::notEquals([1, 2, 3], [1, 2, 4]);
+});
+
+test('Fail with notEquals on same array values', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::notEquals([1, 2, 3], [1, 2, 3]);
+    });
+});
+
+test('Success with strictNotEquals on array values', function () {
+    Assert::strictNotEquals([1, 2, 3], [1, 2, 4]);
+});
+
+test('Success with notEquals on null and non-null values', function () {
+    Assert::notEquals(null, 1);
+});
+
+test('Success with strictNotEquals on null and empty string', function () {
+    Assert::strictNotEquals(null, '');
+});
+
+test('Success with notEquals on boolean values', function () {
+    Assert::notEquals(true, false);
+});
+
+test('Success with strictNotEquals on boolean and integer', function () {
+    Assert::strictNotEquals(true, 1);
+});
+
+test('Success with custom message on equals', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(1, 2, 'Custom error message');
+    });
+});
+
+test('Success with custom message on strictEquals', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::strictEquals(1, '1', 'Custom strict error message');
+    });
+});
+
+test('Success with custom message on notEquals', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::notEquals(1, 1, 'Custom not equals message');
+    });
+});
+
+test('Success with custom message on strictNotEquals', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::strictNotEquals(1, 1, 'Custom strict not equals message');
+    });
+});
+
+test('Success with zero values', function () {
+    Assert::equals(0, 0);
+});
+
+test('Success with strict mode on zero values', function () {
+    Assert::strictEquals(0, 0);
+});
+
+test('Success with empty arrays', function () {
+    Assert::equals([], []);
+});
+
+test('Success with strict mode on empty arrays', function () {
+    Assert::strictEquals([], []);
+});
+
+test('Success with notEquals on empty and non-empty arrays', function () {
+    Assert::notEquals([], [1]);
+});
+
+test('Fail on different float values', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(1.5, 1.6);
+    });
+});
+
+test('Success with notEquals on different float values', function () {
+    Assert::notEquals(1.5, 1.6);
+});

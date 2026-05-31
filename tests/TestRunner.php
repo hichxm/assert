@@ -1,5 +1,7 @@
 <?php
 
+use Hichxm\Assert\AssertException;
+
 class TestRunner
 {
     private $tests;
@@ -8,12 +10,15 @@ class TestRunner
 
     private $skiped;
 
+    private $error;
+
     public function __construct()
     {
         $this->tests = array();
         $this->passed = 0;
         $this->failed = 0;
         $this->skiped = 0;
+        $this->error = 0;
     }
 
     public function add($name, $callback)
@@ -38,10 +43,11 @@ class TestRunner
         $this->printLine('Results:');
         $this->printLine('  Passed: ' . $this->passed);
         $this->printLine('  Failed: ' . $this->failed);
+        $this->printLine('  Error: ' . $this->error);
         $this->printLine('  Skipped: ' . $this->skiped);
         $this->printLine('');
 
-        if ($this->failed > 0) {
+        if ($this->failed > 0 || $this->error > 0) {
             exit(1);
         }
 
@@ -59,9 +65,13 @@ class TestRunner
             $this->skiped++;
             $this->printLine('[SKIP] ' . $name);
             $this->printLine('       ' . $exception->getMessage());
-        } catch (Exception $exception) {
+        } catch (TestException $exception) {
             $this->failed++;
             $this->printLine('[FAIL] ' . $name);
+            $this->printLine('       ' . get_class($exception) . ': ' . $exception->getMessage());
+        } catch (Exception $exception) {
+            $this->error++;
+            $this->printLine('[ERROR] ' . $name);
             $this->printLine('       ' . get_class($exception) . ': ' . $exception->getMessage());
         }
     }
@@ -70,6 +80,11 @@ class TestRunner
     {
         echo $message . PHP_EOL;
     }
+}
+
+class TestException extends Exception
+{
+
 }
 
 class SkipException extends Exception
@@ -86,7 +101,7 @@ function test($name, $callback)
 
 function fail($message)
 {
-    throw new Exception($message);
+    throw new TestException($message);
 }
 
 function skip($message)
