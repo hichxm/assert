@@ -19,7 +19,9 @@ trait EqualsTrait
      */
     public static function equals($value1, $value2, $message = null, $strict = false)
     {
-        if ($strict ? !($value1 === $value2) : !($value1 == $value2)) {
+        $areEqual = $strict ? ($value1 === $value2) : ($value1 == $value2);
+
+        if (!$areEqual) {
             $message = static::generateMessage(
                 $message ?: 'Expected "%s" to be ' . ($strict ? 'strictly ' : '') . 'equal to "%s"',
                 [
