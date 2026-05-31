@@ -21,12 +21,12 @@ class TestRunner
         $this->error = 0;
     }
 
-    public function add($name, $callback)
+    public function add($name, $callback, $group = 'unknown')
     {
-        $this->tests[] = array(
+        $this->tests[$group][] = [
             'name' => $name,
-            'callback' => $callback
-        );
+            'callback' => $callback,
+        ];
     }
 
     public function run()
@@ -35,8 +35,12 @@ class TestRunner
         $this->printLine('Running tests...');
         $this->printLine('');
 
-        foreach ($this->tests as $test) {
-            $this->runOne($test['name'], $test['callback']);
+        foreach ($this->tests as $group => $tests) {
+            $this->printLine('File: ' . $group);
+
+            foreach ($tests as $test) {
+                $this->runOne($test['name'], $test['callback']);
+            }
         }
 
         $this->printLine('');
@@ -60,19 +64,19 @@ class TestRunner
             call_user_func($callback);
 
             $this->passed++;
-            $this->printLine('[OK]   ' . $name);
+            $this->printLine('  [OK]   ' . $name);
         } catch (SkipException $exception) {
             $this->skiped++;
-            $this->printLine('[SKIP] ' . $name);
-            $this->printLine('       ' . $exception->getMessage());
+            $this->printLine('  [SKIP] ' . $name);
+            $this->printLine('         ' . $exception->getMessage());
         } catch (TestException $exception) {
             $this->failed++;
-            $this->printLine('[FAIL] ' . $name);
-            $this->printLine('       ' . get_class($exception) . ': ' . $exception->getMessage());
+            $this->printLine('  [FAIL] ' . $name);
+            $this->printLine('         ' . get_class($exception) . ': ' . $exception->getMessage());
         } catch (Exception $exception) {
             $this->error++;
-            $this->printLine('[ERROR] ' . $name);
-            $this->printLine('       ' . get_class($exception) . ': ' . $exception->getMessage());
+            $this->printLine('  [ERROR] ' . $name);
+            $this->printLine('         ' . get_class($exception) . ': ' . $exception->getMessage());
         }
     }
 
@@ -96,7 +100,11 @@ $GLOBALS['test_runner'] = new TestRunner();
 
 function test($name, $callback)
 {
-    $GLOBALS['test_runner']->add($name, $callback);
+    $backtrace = debug_backtrace();
+
+    $file = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
+
+    $GLOBALS['test_runner']->add($name, $callback, $file);
 }
 
 function fail($message)
