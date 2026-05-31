@@ -13,5 +13,6 @@ if (file_exists($autoload)) {
 }
 
 require_once __DIR__ . '/Assertion/AssertEqualsTest.php';
+require_once __DIR__ . '/Assertion/AssertBiggerThanTest.php';
 
 $GLOBALS['test_runner']->run();
