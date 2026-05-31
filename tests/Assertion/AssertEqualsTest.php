@@ -282,3 +282,90 @@ test('Fail on different float values', function () {
 test('Success with notEquals on different float values', function () {
     Assert::notEquals(1.5, 1.6);
 });
+
+// RFC: Saner string to number comparisons tests
+test('RFC: Success with zero and numeric string "0" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(0, '0');
+});
+
+test('RFC: Success with zero and numeric string "0.0" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(0, '0.0');
+});
+
+test('RFC: Fail with zero and non-numeric string "foo" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(0, 'foo');
+    });
+});
+
+test('RFC: Success with 42 and well-formed numeric string "   42" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(42, '   42');
+});
+
+test('RFC: Fail with 42 and non well-formed numeric string "42foo" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(42, '42foo');
+    });
+});
+
+test('RFC: Success with 42 and different format numeric strings in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(42, '000042');
+    Assert::equals(42, '42.0');
+});
+
+test('RFC: Success with float 42.0 and scientific notation string in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(42.0, '+42.0E0');
+});
+
+test('RFC: Success with zero and scientific notation string "0e214987142012" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(0, '0e214987142012');
+});
+
+test('RFC: Success with INF and string "INF" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(INF, 'INF');
+});
+
+test('RFC: Success with -INF and string "-INF" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(-INF, '-INF');
+});
+
+test('RFC: Fail with NAN and string "NAN" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(NAN, 'NAN');
+    });
+});
+
+test('RFC: Success with INF and large exponent string "1e1000" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(INF, '1e1000');
+});
+
+test('RFC: Success with -INF and large negative exponent string "-1e1000" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    Assert::equals(-INF, '-1e1000');
+});
+
+test('RFC: Fail with 42 and string "abc42" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(42, 'abc42');
+    });
+});
+
+test('RFC: Fail with zero and string "abc42" in non-strict mode', function () {
+    skipIf(PHP_VERSION_ID < 80000, 'Skip this test due to PHP RFC: Saner string to number comparisons');
+    expectException(get_class(new AssertException()), function () {
+        Assert::equals(0, 'abc42');
+    });
+});
