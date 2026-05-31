@@ -100,6 +100,12 @@ test('Fail on different array values', function () {
 });
 
 test('Fail with zero and empty string in non-strict mode', function () {
+    /** @see https://wiki.php.net/rfc/string_to_number_comparison */
+    skipIf(
+        PHP_VERSION_ID < 80000,
+        'Skip this test due to PHP RFC: Saner string to number comparisons'
+    );
+
     expectException(get_class(new AssertException()), function () {
         Assert::equals(0, '');
     });

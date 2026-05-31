@@ -6,11 +6,14 @@ class TestRunner
     private $passed;
     private $failed;
 
+    private $skiped;
+
     public function __construct()
     {
         $this->tests = array();
         $this->passed = 0;
         $this->failed = 0;
+        $this->skiped = 0;
     }
 
     public function add($name, $callback)
@@ -35,6 +38,7 @@ class TestRunner
         $this->printLine('Results:');
         $this->printLine('  Passed: ' . $this->passed);
         $this->printLine('  Failed: ' . $this->failed);
+        $this->printLine('  Skipped: ' . $this->skiped);
         $this->printLine('');
 
         if ($this->failed > 0) {
@@ -51,6 +55,10 @@ class TestRunner
 
             $this->passed++;
             $this->printLine('[OK]   ' . $name);
+        } catch (SkipException $exception) {
+            $this->skiped++;
+            $this->printLine('[SKIP] ' . $name);
+            $this->printLine('       ' . $exception->getMessage());
         } catch (Exception $exception) {
             $this->failed++;
             $this->printLine('[FAIL] ' . $name);
@@ -62,6 +70,11 @@ class TestRunner
     {
         echo $message . PHP_EOL;
     }
+}
+
+class SkipException extends Exception
+{
+
 }
 
 $GLOBALS['test_runner'] = new TestRunner();
@@ -76,31 +89,15 @@ function fail($message)
     throw new Exception($message);
 }
 
-function expectTrue($value, $message)
+function skip($message)
 {
-    if ($value !== true) {
-        fail($message);
-    }
+    throw new SkipException($message);
 }
 
-function expectFalse($value, $message)
+function skipIf($condition, $message)
 {
-    if ($value !== false) {
-        fail($message);
-    }
-}
-
-function expectSame($expected, $actual, $message)
-{
-    if ($expected !== $actual) {
-        fail($message . ' Expected: ' . var_export($expected, true) . ', got: ' . var_export($actual, true));
-    }
-}
-
-function expectEquals($expected, $actual, $message)
-{
-    if ($expected != $actual) {
-        fail($message . ' Expected: ' . var_export($expected, true) . ', got: ' . var_export($actual, true));
+    if ($condition) {
+        skip($message);
     }
 }
 
