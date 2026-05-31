@@ -1,6 +1,7 @@
 {
   "name": "hichxm/assert",
   "description": "Assert library for PHP",
+  "license": "MIT",
   "authors": [
     {
       "name": "Hicham SLIMANI",
