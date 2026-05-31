@@ -5,12 +5,14 @@ namespace Hichxm\Assert;
 use Hichxm\Assert\Assertion\BiggerThanTrait;
 use Hichxm\Assert\Assertion\EqualsTrait;
 use Hichxm\Assert\Assertion\LessThanTrait;
+use Hichxm\Assert\Assertion\TypeTrait;
 
 class Assert
 {
     use EqualsTrait;
     use BiggerThanTrait;
     use LessThanTrait;
+    use TypeTrait;
 
     private static function generateMessage($format, array $args = [])
     {
