@@ -639,6 +639,26 @@ test('Fail with empty value on isNotEmpty', function () {
     });
 });
 
+test('Success with object value', function () {
+    Assert::isObject(new stdClass());
+});
+
+test('Fail with integer value on isObject', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::isObject(1);
+    });
+});
+
+test('Success with not object value', function () {
+    Assert::isNotObject(1);
+});
+
+test('Fail with object value on isNotObject', function () {
+    expectException(get_class(new AssertException()), function () {
+        Assert::isNotObject(new stdClass());
+    });
+});
+
 test('Fail with empty zero value on isNotEmpty', function () {
     expectException(get_class(new AssertException()), function () {
         Assert::isNotEmpty(0);

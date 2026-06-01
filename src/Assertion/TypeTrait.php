@@ -358,4 +358,48 @@ trait TypeTrait
 
         return true;
     }
+
+    /**
+     * Validates that the given value is an object. Throws an exception if the value is not an object.
+     *
+     * @param mixed $value The value to be validated.
+     * @param string|null $message Optional custom error message. If not provided, a default message will be used.
+     *
+     * @return bool Returns true if the value is an object.
+     */
+    public static function isObject($value, $message = null)
+    {
+        if (!is_object($value)) {
+            $message = static::generateMessage(
+                $message ?: 'Expected "%s" to be object.',
+                [ is_array($value) || is_object($value) ? json_encode($value) : $value ]
+            );
+
+            throw static::createException($message);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validates that the given value is not an object. Throws an exception if the value is an object.
+     *
+     * @param mixed $value The value to be validated.
+     * @param string|null $message Optional custom error message. If not provided, a default message will be used.
+     *
+     * @return bool Returns true if the value is not an object.
+     */
+    public static function isNotObject($value, $message = null)
+    {
+        if (is_object($value)) {
+            $message = static::generateMessage(
+                $message ?: 'Expected "%s" not to be object.',
+                [ json_encode($value) ]
+            );
+
+            throw static::createException($message);
+        }
+
+        return true;
+    }
 }
