@@ -2,6 +2,10 @@
 
 namespace Hichxm\Assert\Assertion;
 
+/**
+ * Trait providing methods for comparing two values to determine if one is bigger, smaller, or equal
+ * to the other based on specific conditions.
+ */
 trait BiggerThanTrait
 {
     /**

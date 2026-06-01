@@ -2,6 +2,10 @@
 
 namespace Hichxm\Assert\Assertion;
 
+/**
+ * Provides utility methods for comparing two values for equality or inequality,
+ * with support for strict comparison and custom error handling.
+ */
 trait EqualsTrait
 {
 

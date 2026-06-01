@@ -2,6 +2,10 @@
 
 namespace Hichxm\Assert\Assertion;
 
+/**
+ * Provides methods for performing less-than and less-than-or-equal-to validations.
+ * Includes functionality for inverting the validations and throwing exceptions when conditions are not met.
+ */
 trait LessThanTrait
 {
     /**
