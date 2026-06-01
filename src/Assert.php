@@ -2,17 +2,14 @@
 
 namespace Hichxm\Assert;
 
-use Hichxm\Assert\Assertion\BiggerThanTrait;
-use Hichxm\Assert\Assertion\EqualsTrait;
-use Hichxm\Assert\Assertion\LessThanTrait;
-use Hichxm\Assert\Assertion\TypeTrait;
+use Hichxm\Assert\Assertion\Comparator;
 
 class Assert
 {
-    use EqualsTrait;
-    use BiggerThanTrait;
-    use LessThanTrait;
-    use TypeTrait;
+    use Comparator\EqualsTrait;
+    use Comparator\BiggerThanTrait;
+    use Comparator\LessThanTrait;
+    use Comparator\TypeTrait;
 
     private static function generateMessage($format, array $args = [])
     {
