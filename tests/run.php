@@ -17,5 +17,6 @@ require_once __DIR__ . '/Assertion/AssertBiggerThanTest.php';
 require_once __DIR__ . '/Assertion/AssertLessThanTest.php';
 require_once __DIR__ . '/Assertion/AssertTypeTest.php';
 require_once __DIR__ . '/Assertion/AssertArrayTest.php';
+require_once __DIR__ . '/Assertion/AssertStringTest.php';
 
 $GLOBALS['test_runner']->run();
