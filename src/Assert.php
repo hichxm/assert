@@ -10,6 +10,7 @@ class Assert
     use Assertion\TypeTrait;
     use Assertion\ArrayTrait;
     use Assertion\StringTrait;
+    use Assertion\NumericTrait;
 
     private static function generateMessage($format, array $args = [])
     {
