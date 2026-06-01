@@ -6,10 +6,10 @@ use Hichxm\Assert\Assertion\Comparator;
 
 class Assert
 {
-    use Comparator\EqualsTrait;
-    use Comparator\BiggerThanTrait;
-    use Comparator\LessThanTrait;
-    use Comparator\TypeTrait;
+    use Assertion\EqualsTrait;
+    use Assertion\BiggerThanTrait;
+    use Assertion\LessThanTrait;
+    use Assertion\TypeTrait;
 
     private static function generateMessage($format, array $args = [])
     {

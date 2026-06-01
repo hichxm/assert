@@ -1,6 +1,6 @@
 <?php
 
-namespace Hichxm\Assert\Assertion\Comparator;
+namespace Hichxm\Assert\Assertion;
 
 trait TypeTrait
 {
